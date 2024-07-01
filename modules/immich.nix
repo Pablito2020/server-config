@@ -1,10 +1,11 @@
-{ config, lib, pkgs, self, ... }:
+{ config, lib, pkgs, ... }:
 let
+  packages.${pkgs.stdenv.system}.immich = pkgs.callPackage ../pkgs/immich/default.nix {};
   cfg = config.services.immich;
 in with lib; {
   options.services.immich = {
     enable = mkEnableOption "Immich";
-    package = mkPackageOption self.packages.${pkgs.stdenv.system} "immich" {};
+    package = mkPackageOption packages.${pkgs.stdenv.system} "immich" {};
     mediaLocation = mkOption {
       type = types.path;
       default = "/var/lib/immich";
