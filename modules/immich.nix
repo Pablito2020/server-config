@@ -91,6 +91,9 @@ in with lib; {
         ensureDBOwnership = true;
         ensureClauses.login = true;
       } ];
+      initialScript = pkgs.writeText "init-sql-script" ''
+          ALTER USER immich WITH PASSWORD 'password123';
+      '';
       extraPlugins = mkIf cfg.database.setupPgvectors (ps: with ps; [ pgvecto-rs ]);
       settings = mkIf cfg.database.setupPgvectors {
         shared_preload_libraries = [ "vectors.so" ];
